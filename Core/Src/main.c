@@ -22,6 +22,8 @@
 #include "usart.h"
 #include "gpio.h"
 
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
 
@@ -29,17 +31,10 @@
 #include "wizchip_conf.h"
 #include "socket.h"
 
-
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-SPI_HandleTypeDef hspi2;
-UART_HandleTypeDef huart2;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -63,9 +58,6 @@ uint8_t receive_buff[RECEIVE_BUFF_SIZE];
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void SystemClock_Config(void);
-void MX_GPIO_Init(void);
-void MX_SPI1_Init(void);
-void MX_USART2_UART_Init(void);
 static void UWriteData(const char data);
 static void PHYStatusCheck(void);
 static void PrintPHYConf(void);
@@ -113,7 +105,6 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_SPI2_Init();
-  W5500Init();
   /* USER CODE BEGIN 2 */
   printf("A Simple TCP Echo Server Application using W5500!\r\n");
 
@@ -268,7 +259,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 100;
+  RCC_OscInitStruct.PLL.PLLN = 192;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 2;
   RCC_OscInitStruct.PLL.PLLR = 2;
@@ -286,7 +277,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -370,88 +361,88 @@ void PrintPHYConf(void)
 		printf("\r\nSpeed: 100Mbps");
 	}
 }
-void MX_SPI2_Init(void)
-{
-
-  /* USER CODE BEGIN SPI1_Init 0 */
-
-  /* USER CODE END SPI1_Init 0 */
-
-  /* USER CODE BEGIN SPI1_Init 1 */
-
-  /* USER CODE END SPI1_Init 1 */
-  /* SPI1 parameter configuration*/
-  hspi2.Instance = SPI1;
-  hspi2.Init.Mode = SPI_MODE_MASTER;
-  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
-  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
-  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi2.Init.CRCPolynomial = 7;
-  hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi2.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
-  if (HAL_SPI_Init(&hspi1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN SPI1_Init 2 */
-  __HAL_SPI_ENABLE(&hspi1);
-  /* USER CODE END SPI1_Init 2 */
-
-}
+//void MX_SPI2_Init(void)
+//{
+//
+//  /* USER CODE BEGIN SPI1_Init 0 */
+//
+//  /* USER CODE END SPI1_Init 0 */
+//
+//  /* USER CODE BEGIN SPI1_Init 1 */
+//
+//  /* USER CODE END SPI1_Init 1 */
+//  /* SPI1 parameter configuration*/
+//  hspi2.Instance = SPI2;
+//  hspi2.Init.Mode = SPI_MODE_MASTER;
+//  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+//  hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
+//  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+//  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+//  hspi2.Init.NSS = SPI_NSS_SOFT;
+//  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
+//  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+//  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+//  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+//  hspi2.Init.CRCPolynomial = 7;
+////  hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+////  hspi2.Init.NSSPMode = SPI_NSS_PULSE_ENABLED;
+//  if (HAL_SPI_Init(&hspi2) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
+//  /* USER CODE BEGIN SPI1_Init 2 */
+//  __HAL_SPI_ENABLE(&hspi2);
+//  /* USER CODE END SPI1_Init 2 */
+//
+//}
 
 /**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
   */
-void MX_USART2_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
-  huart2.Instance = USART2;
-  huart2.Init.BaudRate = 38400;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
-  huart2.Init.StopBits = UART_STOPBITS_1;
-  huart2.Init.Parity = UART_PARITY_NONE;
-  huart2.Init.Mode = UART_MODE_TX_RX;
-  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART2_Init 2 */
-
-  /* USER CODE END USART2_Init 2 */
-
-}
+//void MX_USART2_UART_Init(void)
+//{
+//
+//  /* USER CODE BEGIN USART2_Init 0 */
+//
+//  /* USER CODE END USART2_Init 0 */
+//
+//  /* USER CODE BEGIN USART2_Init 1 */
+//
+//  /* USER CODE END USART2_Init 1 */
+//  huart2.Instance = USART2;
+//  huart2.Init.BaudRate = 38400;
+//  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+//  huart2.Init.StopBits = UART_STOPBITS_1;
+//  huart2.Init.Parity = UART_PARITY_NONE;
+//  huart2.Init.Mode = UART_MODE_TX_RX;
+//  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+//  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+////  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+////  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+//  if (HAL_UART_Init(&huart2) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
+//  /* USER CODE BEGIN USART2_Init 2 */
+//
+//  /* USER CODE END USART2_Init 2 */
+//
+//}
 
 /**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
   */
-void MX_GPIO_Init(void)
-{
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-
-}
+//void MX_GPIO_Init(void)
+//{
+//
+//  /* GPIO Ports Clock Enable */
+//  __HAL_RCC_GPIOA_CLK_ENABLE();
+//
+//}
 /* USER CODE END 4 */
 
 /**
