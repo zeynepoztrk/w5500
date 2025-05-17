@@ -610,8 +610,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = 8;
  800069c:	2308      	movs	r3, #8
  800069e:	63fb      	str	r3, [r7, #60]	@ 0x3c
-  RCC_OscInitStruct.PLL.PLLN = 96;
- 80006a0:	2360      	movs	r3, #96	@ 0x60
+  RCC_OscInitStruct.PLL.PLLN = 100;
+ 80006a0:	2364      	movs	r3, #100	@ 0x64
  80006a2:	643b      	str	r3, [r7, #64]	@ 0x40
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
  80006a4:	2302      	movs	r3, #2
